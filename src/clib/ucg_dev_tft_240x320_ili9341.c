@@ -102,6 +102,7 @@ static const ucg_pgm_uint8_t ucg_tft_240x320_ili9341_init_seq[] = {
   UCG_END(),					/* end of sequence */
 };
 
+
 ucg_int_t ucg_dev_ili9341_18x240x320(ucg_t *ucg, ucg_int_t msg, void *data)
 {
   switch(msg)
