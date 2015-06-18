@@ -58,7 +58,7 @@
 #define USE_PIN_LIST
 #endif
 
-#include "csrc/ucg.h"
+#include "clib/ucg.h"
 
 
 // Do not use Ucglib class directly, use Ucglib8Bit or Ucglib4WireSPI instead
