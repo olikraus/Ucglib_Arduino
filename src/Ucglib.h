@@ -61,6 +61,11 @@
 #include "clib/ucg.h"
 
 
+
+ #if defined(__arm__)
+  #define __NOP __asm__("nop\n\t")
+ #endif
+ 
 // Do not use Ucglib class directly, use Ucglib8Bit or Ucglib4WireSPI instead
 class Ucglib : public Print
 {
