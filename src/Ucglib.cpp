@@ -4,36 +4,36 @@
 
   ucglib = universal color graphics library
   ucglib = micro controller graphics library
-  
+
   Universal uC Color Graphics Library
-  
+
   Copyright (c) 2014, olikraus@gmail.com
   All rights reserved.
 
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
 
-  * Redistributions of s_t ource code must retain the above copyright notice, this list 
+  * Redistributions of s_t ource code must retain the above copyright notice, this list
     of conditions and the following disclaimer.
-    
-  * Redistributions in binary form must reproduce the above copyright notice, this 
-    list of conditions and the following disclaimer in the documentation and/or other 
+
+  * Redistributions in binary form must reproduce the above copyright notice, this
+    list of conditions and the following disclaimer in the documentation and/or other
     materials provided with the distribution.
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
-  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
-  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 */
 
 #include <SPI.h>
@@ -91,7 +91,7 @@ static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t data)
     clrbit( scl_port, scl_pin) ;
     data <<= 1;
   } while( i > 0 );
-  
+
 }
 
 #elif defined(__AVR__)
@@ -126,7 +126,7 @@ static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t val)
   uint8_t bitNotClock = u8g_bitNotClock;
   volatile uint8_t *outData = u8g_outData;
   volatile uint8_t *outClock = u8g_outClock;
-  
+
   UCG_ATOMIC_START();
   do
   {
@@ -134,14 +134,14 @@ static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t val)
       *outData |= bitData;
     else
       *outData &= bitNotData;
-   
+
     *outClock |= bitClock;
     val <<= 1;
     cnt--;
     *outClock &= bitNotClock;
   } while( cnt != 0 );
   UCG_ATOMIC_END();
-  
+
 }
 
 #else
@@ -149,7 +149,7 @@ static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t val)
 static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t data)
 {
   uint8_t i = 8;
-  
+
   do
   {
     if ( data & 128 )
@@ -169,7 +169,7 @@ static void ucg_com_arduino_send_generic_SW_SPI(ucg_t *ucg, uint8_t data)
     //delayMicroseconds(1);
     data <<= 1;
   } while( i > 0 );
-  
+
 }
 
 #endif
@@ -187,7 +187,7 @@ static int16_t ucg_com_arduino_generic_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t 
 #ifdef __AVR__
       ucg_com_arduino_init_shift_out(ucg->pin_list[UCG_PIN_SDA], ucg->pin_list[UCG_PIN_SCL]);
 #endif
-    
+
       /* setup pins */
       pinMode(ucg->pin_list[UCG_PIN_CD], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_SDA], OUTPUT);
@@ -218,9 +218,9 @@ static int16_t ucg_com_arduino_generic_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t 
     case UCG_COM_MSG_CHANGE_CS_LINE:
 #ifdef __AVR__
       ucg_com_arduino_init_shift_out(ucg->pin_list[UCG_PIN_SDA], ucg->pin_list[UCG_PIN_SCL]);
-#endif    
+#endif
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
-	digitalWrite(ucg->pin_list[UCG_PIN_CS], arg);      
+	digitalWrite(ucg->pin_list[UCG_PIN_CS], arg);
       break;
     case UCG_COM_MSG_CHANGE_CD_LINE:
       digitalWrite(ucg->pin_list[UCG_PIN_CD], arg);
@@ -280,8 +280,8 @@ static int16_t ucg_com_arduino_generic_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t 
 }
 
 void Ucglib4WireSWSPI::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_generic_SW_SPI); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_generic_SW_SPI);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -302,7 +302,7 @@ static int16_t ucg_com_arduino_illi9325_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t
 #ifdef __AVR__
       ucg_com_arduino_init_shift_out(ucg->pin_list[UCG_PIN_SDA], ucg->pin_list[UCG_PIN_SCL]);
 #endif
-    
+
       /* setup pins */
       pinMode(ucg->pin_list[UCG_PIN_CD], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_SDA], OUTPUT);
@@ -330,29 +330,29 @@ static int16_t ucg_com_arduino_illi9325_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t
       if ( ucg->pin_list[UCG_PIN_RST] != UCG_PIN_VAL_NONE )
 	digitalWrite(ucg->pin_list[UCG_PIN_RST], arg);
       break;
-      
+
     case UCG_COM_MSG_CHANGE_CS_LINE:
 #ifdef __AVR__
       ucg_com_arduino_init_shift_out(ucg->pin_list[UCG_PIN_SDA], ucg->pin_list[UCG_PIN_SCL]);
-#endif    
+#endif
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
-	digitalWrite(ucg->pin_list[UCG_PIN_CS], arg);      
+	digitalWrite(ucg->pin_list[UCG_PIN_CS], arg);
       break;
-      
+
     case UCG_COM_MSG_CHANGE_CD_LINE:
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
       {
-	digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);      
-	digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);      
+	digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);
+	digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);
       }
 
       if ( ucg->com_status & UCG_COM_STATUS_MASK_CD )
 	ucg_com_arduino_send_generic_SW_SPI(ucg, 0x072);
       else
-	ucg_com_arduino_send_generic_SW_SPI(ucg, 0x070);      
-	
+	ucg_com_arduino_send_generic_SW_SPI(ucg, 0x070);
+
       break;
-      
+
     case UCG_COM_MSG_SEND_BYTE:
       ucg_com_arduino_send_generic_SW_SPI(ucg, arg);
       break;
@@ -392,8 +392,8 @@ static int16_t ucg_com_arduino_illi9325_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t
 	  {
 	    if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	    {
-	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);      
-	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);      
+	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);
+	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);
 	    }
 	    ucg_com_arduino_send_generic_SW_SPI(ucg, 0x070);
 	  }
@@ -401,8 +401,8 @@ static int16_t ucg_com_arduino_illi9325_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t
 	  {
 	    if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	    {
-	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);      
-	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);      
+	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 1);
+	      digitalWrite(ucg->pin_list[UCG_PIN_CS], 0);
 	    }
 	    ucg_com_arduino_send_generic_SW_SPI(ucg, 0x072);
 	  }
@@ -418,8 +418,8 @@ static int16_t ucg_com_arduino_illi9325_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t
 }
 
 void Ucglib3WireILI9325SWSPI::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_illi9325_SW_SPI); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_illi9325_SW_SPI);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -466,7 +466,7 @@ static void ucg_com_arduino_send_3wire_9bit_SW_SPI(ucg_t *ucg, uint8_t first_bit
     //delayMicroseconds(1);
     data <<= 1;
   } while( i > 0 );
-  
+
 }
 
 static int16_t ucg_com_arduino_3wire_9bit_SW_SPI(ucg_t *ucg, int16_t msg, uint16_t arg, uint8_t *data)
@@ -478,7 +478,7 @@ static int16_t ucg_com_arduino_3wire_9bit_SW_SPI(ucg_t *ucg, int16_t msg, uint16
       /* "data" is a pointer to ucg_com_info_t structure with the following information: */
       /*	((ucg_com_info_t *)data)->serial_clk_speed value in nanoseconds */
       /*	((ucg_com_info_t *)data)->parallel_clk_speed value in nanoseconds */
-      
+
       /* setup pins */
       pinMode(ucg->pin_list[UCG_PIN_SDA], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_SCL], OUTPUT);
@@ -558,7 +558,7 @@ static int16_t ucg_com_arduino_3wire_9bit_SW_SPI(ucg_t *ucg, int16_t msg, uint16
 	    }
 	  }
 	  data++;
-	  ucg_com_arduino_send_3wire_9bit_SW_SPI(ucg, last_cd, *data); 
+	  ucg_com_arduino_send_3wire_9bit_SW_SPI(ucg, last_cd, *data);
 	  data++;
 	  arg--;
 	}
@@ -569,8 +569,8 @@ static int16_t ucg_com_arduino_3wire_9bit_SW_SPI(ucg_t *ucg, int16_t msg, uint16
 }
 
 void Ucglib3Wire9bitSWSPI::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_3wire_9bit_SW_SPI); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_3wire_9bit_SW_SPI);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -600,19 +600,19 @@ static void ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg_t *ucg)
   uint8_t i;
   if ( ucg_com_3wire_9bit_buf_bytepos == 0 && ucg_com_3wire_9bit_buf_bitpos == 7 )
     return;
-  
+
   for( i = 0; i < UCG_COM_ARDUINO_3WIRE_8BIT_BUF_LEN; i++ )
     SPI.transfer(ucg_com_3wire_9bit_buffer[i] );
-  
+
   ucg_com_arduino_init_3wire_9bit_HW_SPI(ucg);
 }
 
 static void ucg_com_arduino_send_3wire_9bit_HW_SPI(ucg_t *ucg, uint8_t first_bit, uint8_t data)
 {
-  
+
   if ( first_bit != 0 )
     ucg_com_3wire_9bit_buffer[ucg_com_3wire_9bit_buf_bytepos] |= ucg_com_3wire_9bit_cd_mask;
-  
+
   if ( ucg_com_3wire_9bit_buf_bitpos > 0 )
   {
     ucg_com_3wire_9bit_buf_bitpos--;
@@ -624,14 +624,14 @@ static void ucg_com_arduino_send_3wire_9bit_HW_SPI(ucg_t *ucg, uint8_t first_bit
     ucg_com_3wire_9bit_buf_bytepos++;
     ucg_com_3wire_9bit_cd_mask = 128;
   }
-  
+
   ucg_com_3wire_9bit_buffer[ucg_com_3wire_9bit_buf_bytepos] |=  data >> (7-ucg_com_3wire_9bit_buf_bitpos);
 
   if ( ucg_com_3wire_9bit_buf_bitpos == 7 )
   {
     ucg_com_3wire_9bit_buf_bytepos++;
     if ( ucg_com_3wire_9bit_buf_bytepos >= UCG_COM_ARDUINO_3WIRE_8BIT_BUF_LEN )
-      ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);      
+      ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);
   }
   else
   {
@@ -649,9 +649,9 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
       /* "data" is a pointer to ucg_com_info_t structure with the following information: */
       /*	((ucg_com_info_t *)data)->serial_clk_speed value in nanoseconds */
       /*	((ucg_com_info_t *)data)->parallel_clk_speed value in nanoseconds */
-      
+
       ucg_com_arduino_init_3wire_9bit_HW_SPI(ucg);
-    
+
       /* setup pins */
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	pinMode(ucg->pin_list[UCG_PIN_CS], OUTPUT);
@@ -669,7 +669,7 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
       SPI.setClockDivider( SPI_CLOCK_DIV2 );
       //SPI.setClockDivider( SPI_CLOCK_DIV64  );
       //SPI.setDataMode(SPI_MODE0);
-    
+
 #endif
 #if defined(__SAM3X8E__)
       SPI.setClockDivider( (((ucg_com_info_t *)data)->serial_clk_speed * 84L + 999)/1000L );
@@ -682,7 +682,7 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
       break;
     case UCG_COM_MSG_DELAY:
       /* flush pending data first, then do the delay */
-      ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);      
+      ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);
       delayMicroseconds(arg);
       break;
     case UCG_COM_MSG_CHANGE_RESET_LINE:
@@ -691,14 +691,14 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
       break;
     case UCG_COM_MSG_CHANGE_CS_LINE:
       if ( arg != 0 )
-	ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);      
-      
+	ucg_com_arduino_flush_3wire_9bit_HW_SPI(ucg);
+
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	digitalWrite(ucg->pin_list[UCG_PIN_CS], arg);
-      
+
       if ( arg == 0 )
 	ucg_com_arduino_init_3wire_9bit_HW_SPI(ucg);
-      
+
       break;
     case UCG_COM_MSG_CHANGE_CD_LINE:
       /* not used */
@@ -750,7 +750,7 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
 	    }
 	  }
 	  data++;
-	  ucg_com_arduino_send_3wire_9bit_HW_SPI(ucg, last_cd, *data); 
+	  ucg_com_arduino_send_3wire_9bit_HW_SPI(ucg, last_cd, *data);
 	  data++;
 	  arg--;
 	}
@@ -761,8 +761,8 @@ static int16_t ucg_com_arduino_3wire_9bit_HW_SPI(ucg_t *ucg, int16_t msg, uint16
 }
 
 void Ucglib3Wire9bitHWSPI::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_3wire_9bit_HW_SPI); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_3wire_9bit_HW_SPI);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -771,7 +771,7 @@ void Ucglib3Wire9bitHWSPI::begin(uint8_t is_transparent)
 /* 8 Bit Parallel */
 
 
-#if defined(__PIC32MX) || defined(__arm__) || defined(ESP8266)
+#if !defined(__MK20DX256__) && (defined(__PIC32MX) || defined(__arm__) || defined(ESP8266))
 /* CHIPKIT PIC32 */
 static volatile uint32_t *u8g_data_port[9];
 static uint32_t u8g_data_mask[9];
@@ -784,119 +784,172 @@ static void ucg_com_arduino_init_8bit(ucg_t *ucg)
 {
 
   u8g_data_port[0] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D0]));
-  u8g_data_mask[0] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D0]);  
-  
+  u8g_data_mask[0] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D0]);
+
   u8g_data_port[1] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D1]));
-  u8g_data_mask[1] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D1]);  
-  
+  u8g_data_mask[1] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D1]);
+
   u8g_data_port[2] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D2]));
-  u8g_data_mask[2] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D2]);  
-  
+  u8g_data_mask[2] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D2]);
+
   u8g_data_port[3] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D3]));
-  u8g_data_mask[3] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D3]);  
-  
+  u8g_data_mask[3] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D3]);
+
   u8g_data_port[4] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D4]));
-  u8g_data_mask[4] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D4]);  
-  
+  u8g_data_mask[4] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D4]);
+
   u8g_data_port[5] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D5]));
-  u8g_data_mask[5] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D5]);  
-  
+  u8g_data_mask[5] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D5]);
+
   if ( ucg->pin_list[UCG_PIN_D6] != UCG_PIN_VAL_NONE )
   {
     u8g_data_port[6] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D6]));
-    u8g_data_mask[6] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D6]);  
+    u8g_data_mask[6] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D6]);
   }
-  
+
   if ( ucg->pin_list[UCG_PIN_D7] != UCG_PIN_VAL_NONE )
   {
     u8g_data_port[7] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_D7]));
-    u8g_data_mask[7] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D7]);  
-  }  
+    u8g_data_mask[7] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_D7]);
+  }
 
   u8g_data_port[8] =  portOutputRegister(digitalPinToPort(ucg->pin_list[UCG_PIN_WR]));
-  u8g_data_mask[8] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_WR]);  
-  
+  u8g_data_mask[8] =  digitalPinToBitMask(ucg->pin_list[UCG_PIN_WR]);
+
 }
 
 static void ucg_com_arduino_send_8bit(ucg_t *ucg, uint8_t data)
 {
   int i;
-  #if defined(__arm__)
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-#endif
+  #if defined(__MK20DX256__)
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+  #elif defined(__arm__)
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+  #endif
   for( i = 0; i < 8; i++ )
   {
     if ( data & 1 )
-      *u8g_data_port[i] |= u8g_data_mask[i]; 
+      *u8g_data_port[i] |= u8g_data_mask[i];
     else
-      *u8g_data_port[i] &= ~u8g_data_mask[i]; 
+      *u8g_data_port[i] &= ~u8g_data_mask[i];
     data >>= 1;
   }
 
-  #if defined(__arm__)
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  delayMicroseconds(1);
-#elif defined(__AVR__)
-#else
-  delayMicroseconds(1);
-#endif
-  
-  *u8g_data_port[8] &= ~u8g_data_mask[8]; 
-  
-#if defined(__arm__)
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  __NOP;
-  delayMicroseconds(1);
-#elif defined(__AVR__)
-#else
-  delayMicroseconds(1);
-#endif
-  
-  *u8g_data_port[8] |= u8g_data_mask[8]; 
+  #if defined(__MK20DX256__)
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    delayMicroseconds(1);
+  #elif defined(__arm__)
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    delayMicroseconds(1);
+  #elif defined(__AVR__)
+  #else
+    delayMicroseconds(1);
+  #endif
+
+  *u8g_data_port[8] &= ~u8g_data_mask[8];
+
+  #if defined(__MK20DX256__)
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    __asm__ __volatile__("NOP");
+    delayMicroseconds(1);
+  #elif defined(__arm__)
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    __NOP;
+    delayMicroseconds(1);
+  #elif defined(__AVR__)
+  #else
+    delayMicroseconds(1);
+  #endif
+
+  *u8g_data_port[8] |= u8g_data_mask[8];
 }
 
 /*
@@ -911,7 +964,7 @@ static void ucg_com_arduino_send_8bit(ucg_t *ucg, uint8_t data)
     if ( ucg->pin_list[UCG_PIN_D6] != UCG_PIN_VAL_NONE )
       digitalWrite(ucg->pin_list[UCG_PIN_D6], (data & 64) == 0 ? 0 : 1 );
     if ( ucg->pin_list[UCG_PIN_D7] != UCG_PIN_VAL_NONE )
-      digitalWrite(ucg->pin_list[UCG_PIN_D7], (data & 128) == 0 ? 0 : 1 );  
+      digitalWrite(ucg->pin_list[UCG_PIN_D7], (data & 128) == 0 ? 0 : 1 );
     delayMicroseconds(1);
     digitalWrite(ucg->pin_list[UCG_PIN_WR], 0);
     delayMicroseconds(1);
@@ -927,11 +980,11 @@ static int16_t ucg_com_arduino_generic_8bit(ucg_t *ucg, int16_t msg, uint16_t ar
       /* "data" is a pointer to ucg_com_info_t structure with the following information: */
       /*	((ucg_com_info_t *)data)->serial_clk_speed value in nanoseconds */
       /*	((ucg_com_info_t *)data)->parallel_clk_speed value in nanoseconds */
-      
+
       /* setup pins */
       pinMode(ucg->pin_list[UCG_PIN_CD], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_WR], OUTPUT);
-    
+
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	pinMode(ucg->pin_list[UCG_PIN_CS], OUTPUT);
       if ( ucg->pin_list[UCG_PIN_RST] != UCG_PIN_VAL_NONE )
@@ -956,7 +1009,7 @@ static int16_t ucg_com_arduino_generic_8bit(ucg_t *ucg, int16_t msg, uint16_t ar
 	digitalWrite(ucg->pin_list[UCG_PIN_RST], 1);
 
       ucg_com_arduino_init_8bit(ucg);
-      
+
       break;
     case UCG_COM_MSG_POWER_DOWN:
       break;
@@ -1029,8 +1082,8 @@ static int16_t ucg_com_arduino_generic_8bit(ucg_t *ucg, int16_t msg, uint16_t ar
 }
 
 void Ucglib8Bit::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_generic_8bit); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_generic_8bit);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -1055,11 +1108,11 @@ static int16_t ucg_com_arduino_port_d(ucg_t *ucg, int16_t msg, uint16_t arg, uin
       /* "data" is a pointer to ucg_com_info_t structure with the following information: */
       /*	((ucg_com_info_t *)data)->serial_clk_speed value in nanoseconds */
       /*	((ucg_com_info_t *)data)->parallel_clk_speed value in nanoseconds */
-      
+
       /* setup pins */
       pinMode(ucg->pin_list[UCG_PIN_CD], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_WR], OUTPUT);
-      
+
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	pinMode(ucg->pin_list[UCG_PIN_CS], OUTPUT);
       if ( ucg->pin_list[UCG_PIN_RST] != UCG_PIN_VAL_NONE )
@@ -1148,7 +1201,7 @@ static int16_t ucg_com_arduino_port_d(ucg_t *ucg, int16_t msg, uint16_t arg, uin
 	  }
 	}
 	data++;
-	ucg_com_arduino_port_d_send(*data, ucg->data_port[UCG_PIN_WR], ~ucg->data_mask[UCG_PIN_WR], ucg->data_mask[UCG_PIN_WR]);	
+	ucg_com_arduino_port_d_send(*data, ucg->data_port[UCG_PIN_WR], ~ucg->data_mask[UCG_PIN_WR], ucg->data_mask[UCG_PIN_WR]);
 	data++;
 	arg--;
       }
@@ -1158,8 +1211,8 @@ static int16_t ucg_com_arduino_port_d(ucg_t *ucg, int16_t msg, uint16_t arg, uin
 }
 
 void Ucglib8BitPortD::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_port_d); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_port_d);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -1175,16 +1228,16 @@ static int16_t ucg_com_arduino_4wire_HW_SPI(ucg_t *ucg, int16_t msg, uint16_t ar
       /* "data" is a pointer to ucg_com_info_t structure with the following information: */
       /*	((ucg_com_info_t *)data)->serial_clk_speed value in nanoseconds */
       /*	((ucg_com_info_t *)data)->parallel_clk_speed value in nanoseconds */
-      
+
       /* setup pins */
-    
+
       if ( ucg->pin_list[UCG_PIN_RST] != UCG_PIN_VAL_NONE )
 	pinMode(ucg->pin_list[UCG_PIN_RST], OUTPUT);
       pinMode(ucg->pin_list[UCG_PIN_CD], OUTPUT);
-      
+
       if ( ucg->pin_list[UCG_PIN_CS] != UCG_PIN_VAL_NONE )
 	pinMode(ucg->pin_list[UCG_PIN_CS], OUTPUT);
-      
+
       /* setup Arduino SPI */
       SPI.begin();
 #if defined(__AVR__)
@@ -1197,7 +1250,7 @@ static int16_t ucg_com_arduino_4wire_HW_SPI(ucg_t *ucg, int16_t msg, uint16_t ar
       SPI.setBitOrder(MSBFIRST);
       break;
     case UCG_COM_MSG_POWER_DOWN:
-      SPI.end(); 
+      SPI.end();
       break;
     case UCG_COM_MSG_DELAY:
       delayMicroseconds(arg);
@@ -1214,7 +1267,7 @@ static int16_t ucg_com_arduino_4wire_HW_SPI(ucg_t *ucg, int16_t msg, uint16_t ar
       digitalWrite(ucg->pin_list[UCG_PIN_CD], arg);
       break;
     case UCG_COM_MSG_SEND_BYTE:
-      SPI.transfer(arg); 
+      SPI.transfer(arg);
       break;
     case UCG_COM_MSG_REPEAT_1_BYTE:
       while( arg > 0 ) {
@@ -1269,8 +1322,8 @@ static int16_t ucg_com_arduino_4wire_HW_SPI(ucg_t *ucg, int16_t msg, uint16_t ar
 }
 
 void Ucglib4WireHWSPI::begin(uint8_t is_transparent)
-{ 
-  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_4wire_HW_SPI); 
+{
+  ucg_Init(&ucg, dev_cb, ext_cb, ucg_com_arduino_4wire_HW_SPI);
   ucg_SetFontMode(&ucg, is_transparent);
 }
 
@@ -1279,23 +1332,23 @@ void Ucglib4WireHWSPI::begin(uint8_t is_transparent)
 
 void Ucglib::init(void) {
   uint8_t i;
-  
+
   // do a dummy init so that something usefull is part of the ucg structure
   ucg_Init(&ucg, ucg_dev_default_cb, ucg_ext_none, (ucg_com_fnptr)0);
 
   // reset cursor position
   tx = 0;
   ty = 0;
-  tdir = 0;	// default direction for Arduino print() 
-  
+  tdir = 0;	// default direction for Arduino print()
+
   for( i = 0; i < UCG_PIN_COUNT; i++ )
     ucg.pin_list[i] = UCG_PIN_VAL_NONE;
-  
+
 }
 
-size_t Ucglib::write(uint8_t c) { 
+size_t Ucglib::write(uint8_t c) {
   ucg_int_t delta;
-  delta = ucg_DrawGlyph(get_ucg(), get_tx(), get_ty(), get_tdir(), c); 
+  delta = ucg_DrawGlyph(get_ucg(), get_tx(), get_ty(), get_tdir(), c);
   switch(get_tdir()) {
     case 0: get_tx() += delta; break;
     case 1: get_ty() += delta; break;
@@ -1304,4 +1357,3 @@ size_t Ucglib::write(uint8_t c) {
   }
   return 1;
 }
-
