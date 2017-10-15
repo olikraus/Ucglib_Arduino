@@ -37,40 +37,39 @@
 
 int16_t ucg_com_template_cb(ucg_t *ucg, int16_t msg, uint32_t arg, uint8_t *data)
 {
-  switch(msg)
+  switch (msg)
   {
-    case UCG_COM_MSG_POWER_UP:
-      break;
-    case UCG_COM_MSG_POWER_DOWN:
-      break;
-    case UCG_COM_MSG_DELAY:
-      break;
-    case UCG_COM_MSG_CHANGE_RESET_LINE:
-      break;
-    case UCG_COM_MSG_CHANGE_CS_LINE:
-      break;
-    case UCG_COM_MSG_CHANGE_CD_LINE:
-      break;
-    case UCG_COM_MSG_SEND_BYTE:
-      break;
-    case UCG_COM_MSG_REPEAT_1_BYTE:
-      break;
-    case UCG_COM_MSG_REPEAT_2_BYTES:
-      break;
-    case UCG_COM_MSG_REPEAT_3_BYTES:
-      break;
-    case UCG_COM_MSG_SEND_STR:
-      break;
-    case UCG_COM_MSG_SEND_CD_DATA_SEQUENCE:
-      break;
+  case UCG_COM_MSG_POWER_UP:
+    break;
+  case UCG_COM_MSG_POWER_DOWN:
+    break;
+  case UCG_COM_MSG_DELAY:
+    break;
+  case UCG_COM_MSG_CHANGE_RESET_LINE:
+    break;
+  case UCG_COM_MSG_CHANGE_CS_LINE:
+    break;
+  case UCG_COM_MSG_CHANGE_CD_LINE:
+    break;
+  case UCG_COM_MSG_SEND_BYTE:
+    break;
+  case UCG_COM_MSG_REPEAT_1_BYTE:
+    break;
+  case UCG_COM_MSG_REPEAT_2_BYTES:
+    break;
+  case UCG_COM_MSG_REPEAT_3_BYTES:
+    break;
+  case UCG_COM_MSG_SEND_STR:
+    break;
+  case UCG_COM_MSG_SEND_CD_DATA_SEQUENCE:
+    break;
   }
   return 1;
 }
 
-
 void ucg_com_PowerDown(ucg_t *ucg)
 {
-  if ( (ucg->com_status & UCG_COM_STATUS_MASK_POWER) != 0 )
+  if ((ucg->com_status & UCG_COM_STATUS_MASK_POWER) != 0)
     ucg->com_cb(ucg, UCG_COM_MSG_POWER_DOWN, 0, NULL);
   ucg->com_status &= ~UCG_COM_STATUS_MASK_POWER;
 }
@@ -84,11 +83,11 @@ int16_t ucg_com_PowerUp(ucg_t *ucg, uint16_t serial_clk_speed, uint16_t parallel
   ucg_com_info_t com_info;
   com_info.serial_clk_speed = serial_clk_speed;
   com_info.parallel_clk_speed = parallel_clk_speed;
-  
-  ucg_com_PowerDown(ucg);  
+
+  ucg_com_PowerDown(ucg);
   ucg->com_initial_change_sent = 0;
   r = ucg->com_cb(ucg, UCG_COM_MSG_POWER_UP, 0UL, (uint8_t *)&com_info);
-  if ( r != 0 )
+  if (r != 0)
   {
     ucg->com_status |= UCG_COM_STATUS_MASK_POWER;
   }
@@ -97,9 +96,9 @@ int16_t ucg_com_PowerUp(ucg_t *ucg, uint16_t serial_clk_speed, uint16_t parallel
 
 void ucg_com_SetLineStatus(ucg_t *ucg, uint8_t level, uint8_t mask, uint8_t msg)
 {
-  if ( level == 0 )
+  if (level == 0)
   {
-    if ( (ucg->com_initial_change_sent & mask) == 0 || (ucg->com_status & mask) == mask )
+    if ((ucg->com_initial_change_sent & mask) == 0 || (ucg->com_status & mask) == mask)
     {
       ucg->com_cb(ucg, msg, level, NULL);
       ucg->com_status &= ~mask;
@@ -108,7 +107,7 @@ void ucg_com_SetLineStatus(ucg_t *ucg, uint8_t level, uint8_t mask, uint8_t msg)
   }
   else
   {
-    if ( (ucg->com_initial_change_sent & mask) == 0 || (ucg->com_status & mask) == 0 )
+    if ((ucg->com_initial_change_sent & mask) == 0 || (ucg->com_status & mask) == 0)
     {
       ucg->com_cb(ucg, msg, level, NULL);
       ucg->com_status |= mask;
@@ -141,13 +140,12 @@ void ucg_com_DelayMicroseconds(ucg_t *ucg, uint16_t delay)
 /* delay in milliseconds */
 void ucg_com_DelayMilliseconds(ucg_t *ucg, uint16_t delay)
 {
-  while( delay > 0 )
+  while (delay > 0)
   {
     ucg_com_DelayMicroseconds(ucg, 1000);
     delay--;
   }
 }
-
 
 #ifndef ucg_com_SendByte
 void ucg_com_SendByte(ucg_t *ucg, uint8_t byte)
@@ -166,7 +164,6 @@ void ucg_com_SendRepeat2Bytes(ucg_t *ucg, uint16_t cnt, uint8_t *byte_ptr)
   ucg->com_cb(ucg, UCG_COM_MSG_REPEAT_2_BYTES, cnt, byte_ptr);
 }
 
-
 #ifndef ucg_com_SendRepeat3Bytes
 void ucg_com_SendRepeat3Bytes(ucg_t *ucg, uint16_t cnt, uint8_t *byte_ptr)
 {
@@ -182,21 +179,23 @@ void ucg_com_SendString(ucg_t *ucg, uint16_t cnt, const uint8_t *byte_ptr)
 void ucg_com_SendStringP(ucg_t *ucg, uint16_t cnt, const ucg_pgm_uint8_t *byte_ptr)
 {
   uint8_t b;
-  while( cnt > 0 )
+  while (cnt > 0)
   {
     b = ucg_pgm_read(byte_ptr);
     //b = *byte_ptr;
     ucg->com_cb(ucg, UCG_COM_MSG_SEND_BYTE, b, NULL);
     byte_ptr++;
     cnt--;
+#ifdef ESP8266
+    yield(); // avoid block process
+#endif
   }
 }
-
 
 void ucg_com_SendCmdDataSequence(ucg_t *ucg, uint16_t cnt, const uint8_t *byte_ptr, uint8_t cd_line_status_at_end)
 {
   ucg->com_cb(ucg, UCG_COM_MSG_SEND_CD_DATA_SEQUENCE, cnt, (uint8_t *)byte_ptr);
-  ucg_com_SetCDLineStatus(ucg, cd_line_status_at_end);	// ensure that the status is set correctly for the CD line */
+  ucg_com_SetCDLineStatus(ucg, cd_line_status_at_end); // ensure that the status is set correctly for the CD line */
 }
 
 /*
@@ -297,16 +296,15 @@ CFG_CD(c,a)	Configure CMD/DATA line: "c" logic level CMD, "a" logic level CMD Ar
 
 static void ucg_com_SendCmdArg(ucg_t *ucg, const ucg_pgm_uint8_t *data, uint8_t cmd_cnt, uint8_t arg_cnt)
 {
-  ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd>>1)&1 );
+  ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd >> 1) & 1);
   ucg_com_SendStringP(ucg, cmd_cnt, data);
-  if ( arg_cnt > 0 )
+  if (arg_cnt > 0)
   {
     data += cmd_cnt;
-    ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd)&1 );
+    ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd) & 1);
     ucg_com_SendStringP(ucg, arg_cnt, data);
   }
 }
-
 
 //void ucg_com_SendCmdSeq(ucg_t *ucg, const ucg_pgm_uint8_t *data)
 void ucg_com_SendCmdSeq(ucg_t *ucg, const ucg_pgm_uint8_t *data)
@@ -316,91 +314,90 @@ void ucg_com_SendCmdSeq(ucg_t *ucg, const ucg_pgm_uint8_t *data)
   uint8_t hi;
   uint8_t lo;
 
-  for(;;)
+  for (;;)
   {
     b = ucg_pgm_read(data);
     //b = *data;
     hi = (b) >> 4;
-    lo = (b) & 0x0f;
-    switch( hi )
+    lo = (b)&0x0f;
+    switch (hi)
     {
+    case 0:
+      return; /* end marker */
+    case 1:
+    case 2:
+    case 3:
+      ucg_com_SendCmdArg(ucg, data + 1, hi, lo);
+      data += 1 + hi + lo;
+      break;
+    case 6:
+      ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd) & 1);
+      ucg_com_SendStringP(ucg, lo, data + 1);
+      data += 1 + lo;
+      break;
+    case 7: /* note: 0x070 is used to set data line status */
+      ucg_com_SetCDLineStatus(ucg, ((ucg->com_cfg_cd >> 1) & 1) ^ 1);
+      if (lo > 0)
+        ucg_com_SendStringP(ucg, lo, data + 1);
+      data += 1 + lo;
+      break;
+    case 8:
+      data++;
+      b = ucg_pgm_read(data);
+      //b = *data;
+      ucg_com_DelayMilliseconds(ucg, (((uint16_t)lo) << 8) + b);
+      data++;
+      break;
+    case 9:
+      data++;
+      b = ucg_pgm_read(data);
+      //b = *data;
+      ucg_com_DelayMicroseconds(ucg, (((uint16_t)lo) << 8) + b);
+      data++;
+      break;
+    case 10:
+      data++;
+      b = ucg_pgm_read(data);
+      data++;
+      bb = ucg_pgm_read(data);
+      data++;
+      //b = data[0];
+      //bb = data[1];
+      ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd) & 1);
+      ucg_com_SendByte(ucg, (((uint8_t)(((ucg->arg.pixel.pos.x) >> lo))) & b) | bb);
+      //data+=2;
+      break;
+    case 11:
+      data++;
+      b = ucg_pgm_read(data);
+      data++;
+      bb = ucg_pgm_read(data);
+      data++;
+      //b = data[0];
+      //bb = data[1];
+      ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd) & 1);
+      ucg_com_SendByte(ucg, (((uint8_t)(((ucg->arg.pixel.pos.y) >> lo))) & b) | bb);
+      //data+=2;
+      break;
+    case 15:
+      hi = lo >> 2;
+      lo &= 3;
+      switch (hi)
+      {
       case 0:
-	return;		/* end marker */
+        ucg_com_SetResetLineStatus(ucg, lo & 1);
+        break;
       case 1:
-      case 2:
+        ucg_com_SetCSLineStatus(ucg, lo & 1);
+        break;
       case 3:
-	ucg_com_SendCmdArg(ucg, data+1, hi, lo);
-	data+=1+hi+lo;
-	break;
-      case 6:
-	ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd)&1 );
-	ucg_com_SendStringP(ucg, lo, data+1);
-	data+=1+lo;      
-	break;
-      case 7:	/* note: 0x070 is used to set data line status */
-	ucg_com_SetCDLineStatus(ucg, ((ucg->com_cfg_cd>>1)&1)^1 );
-	if ( lo > 0 )
-	  ucg_com_SendStringP(ucg, lo, data+1);
-	data+=1+lo;      
-	break;
-      case 8:
-	data++;
-	b = ucg_pgm_read(data);
-	//b = *data;
-	ucg_com_DelayMilliseconds(ucg, (((uint16_t)lo)<<8) + b );
-	data++;
-	break;
-      case 9:
-	data++;
-	b = ucg_pgm_read(data);
-	//b = *data;
-	ucg_com_DelayMicroseconds(ucg, (((uint16_t)lo)<<8) + b );
-	data++;
-	break;
-      case 10:
-	data++;
-	b = ucg_pgm_read(data);
-	data++;
-	bb = ucg_pgm_read(data);
-	data++;
-	//b = data[0];
-	//bb = data[1];
-	ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd)&1 );
-	ucg_com_SendByte(ucg, (((uint8_t)(((ucg->arg.pixel.pos.x)>>lo)))&b)|bb );
-	//data+=2;
-	break;
-      case 11:
-	data++;
-	b = ucg_pgm_read(data);
-	data++;
-	bb = ucg_pgm_read(data);
-	data++;
-	//b = data[0];
-	//bb = data[1];
-	ucg_com_SetCDLineStatus(ucg, (ucg->com_cfg_cd)&1 );
-	ucg_com_SendByte(ucg, (((uint8_t)(((ucg->arg.pixel.pos.y)>>lo)))&b)|bb );
-	//data+=2;
-	break;
-      case 15:
-	hi = lo >> 2;
-	lo &= 3;
-	switch(hi)
-	{
-	  case 0:
-	    ucg_com_SetResetLineStatus(ucg, lo&1);
-	    break;
-	  case 1:
-	    ucg_com_SetCSLineStatus(ucg, lo&1);
-	    break;
-	  case 3:
-	    ucg->com_cfg_cd = lo;
-	    break;
-	}
-	data++;
-	break;
-      default:
-	return;
-    }  
+        ucg->com_cfg_cd = lo;
+        break;
+      }
+      data++;
+      break;
+    default:
+      return;
+    }
   }
 }
-

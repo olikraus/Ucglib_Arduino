@@ -37,12 +37,15 @@
 
 void ucg_DrawBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h)
 {
-  while( h > 0 )
+  while (h > 0)
   {
     ucg_DrawHLine(ucg, x, y, w);
     h--;
     y++;
-  }  
+#ifdef ESP8266
+    yield(); // avoid block process
+#endif
+  }
 }
 
 /*
@@ -58,8 +61,6 @@ void ucg_ClearScreen(ucg_t *ucg)
   ucg_SetColor(ucg, 0, 255, 255, 255);
 }
 
-
-
 void ucg_DrawRBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h, ucg_int_t r)
 {
   ucg_int_t xl, yu;
@@ -69,15 +70,15 @@ void ucg_DrawRBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h
   xl += r;
   yu = y;
   yu += r;
- 
+
   xr = x;
   xr += w;
   xr -= r;
   xr -= 1;
-  
+
   yl = y;
   yl += h;
-  yl -= r; 
+  yl -= r;
   yl -= 1;
 
   ucg_DrawDisc(ucg, xl, yu, r, UCG_DRAW_UPPER_LEFT);
@@ -96,36 +97,37 @@ void ucg_DrawRBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h
     hh -= r;
     hh -= r;
     hh -= 2;
-    
+
     xl++;
     yu++;
     h--;
-    ucg_DrawBox(ucg, xl, y, ww, r+1);
-    ucg_DrawBox(ucg, xl, yl, ww, r+1);
+    ucg_DrawBox(ucg, xl, y, ww, r + 1);
+    ucg_DrawBox(ucg, xl, yl, ww, r + 1);
     ucg_DrawBox(ucg, x, yu, w, hh);
   }
 }
 
-
-ucg_ccs_t ucg_ccs_box[6];	/* color component sliders used by GradientBox */
+ucg_ccs_t ucg_ccs_box[6]; /* color component sliders used by GradientBox */
 
 void ucg_DrawGradientBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h)
 {
   uint8_t i;
-  
+
   /* Setup ccs for l90se. This will be updated by ucg_clip_l90se if required */
   /* 8. Jan 2014: correct? */
 
   //printf("%d %d %d\n", ucg->arg.rgb[3].color[0], ucg->arg.rgb[3].color[1], ucg->arg.rgb[3].color[2]);
-  
-  for ( i = 0; i < 3; i++ )
+
+  for (i = 0; i < 3; i++)
   {
-    ucg_ccs_init(ucg_ccs_box+i, ucg->arg.rgb[0].color[i], ucg->arg.rgb[2].color[i], h);
-    ucg_ccs_init(ucg_ccs_box+i+3, ucg->arg.rgb[1].color[i], ucg->arg.rgb[3].color[i], h);
+    ucg_ccs_init(ucg_ccs_box + i, ucg->arg.rgb[0].color[i], ucg->arg.rgb[2].color[i], h);
+    ucg_ccs_init(ucg_ccs_box + i + 3, ucg->arg.rgb[1].color[i], ucg->arg.rgb[3].color[i], h);
+#ifdef ESP8266
+    yield(); // avoid block process
+#endif
   }
-  
-  
-  while( h > 0 )
+
+  while (h > 0)
   {
     ucg->arg.rgb[0].color[0] = ucg_ccs_box[0].current;
     ucg->arg.rgb[0].color[1] = ucg_ccs_box[1].current;
@@ -140,25 +142,28 @@ void ucg_DrawGradientBox(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_
     ucg->arg.len = w;
     ucg->arg.dir = 0;
     ucg_DrawL90SEWithArg(ucg);
-    for ( i = 0; i < 6; i++ )
-      ucg_ccs_step(ucg_ccs_box+i);
+    for (i = 0; i < 6; i++) {
+      ucg_ccs_step(ucg_ccs_box + i);
+#ifdef ESP8266
+      yield(); // avoid block process
+#endif
+    }
     h--;
     y++;
   }
 }
 
-
 /* restrictions: w > 0 && h > 0 */
 void ucg_DrawFrame(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t h)
 {
   ucg_int_t xtmp = x;
-  
+
   ucg_DrawHLine(ucg, x, y, w);
   ucg_DrawVLine(ucg, x, y, h);
-  x+=w;
+  x += w;
   x--;
   ucg_DrawVLine(ucg, x, y, h);
-  y+=h;
+  y += h;
   y--;
   ucg_DrawHLine(ucg, xtmp, y, w);
 }
@@ -171,18 +176,18 @@ void ucg_DrawRFrame(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t
   xl += r;
   yu = y;
   yu += r;
- 
+
   {
     ucg_int_t yl, xr;
-      
+
     xr = x;
     xr += w;
     xr -= r;
     xr -= 1;
-    
+
     yl = y;
     yl += h;
-    yl -= r; 
+    yl -= r;
     yl -= 1;
 
     ucg_DrawCircle(ucg, xl, yu, r, UCG_DRAW_UPPER_LEFT);
@@ -202,14 +207,14 @@ void ucg_DrawRFrame(ucg_t *ucg, ucg_int_t x, ucg_int_t y, ucg_int_t w, ucg_int_t
     hh -= r;
     hh -= r;
     hh -= 2;
-    
+
     xl++;
     yu++;
     h--;
     w--;
     ucg_DrawHLine(ucg, xl, y, ww);
-    ucg_DrawHLine(ucg, xl, y+h, ww);
-    ucg_DrawVLine(ucg, x,         yu, hh);
-    ucg_DrawVLine(ucg, x+w, yu, hh);
+    ucg_DrawHLine(ucg, xl, y + h, ww);
+    ucg_DrawVLine(ucg, x, yu, hh);
+    ucg_DrawVLine(ucg, x + w, yu, hh);
   }
 }
