@@ -97,51 +97,56 @@
     
   >>> Please uncomment (and update) one of the following constructors. <<<  
 */
-//Ucglib8BitPortD ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, /* wr= */ 18 , /* cd= */ 19 , /* cs= */ 17, /* reset= */ 16 );
-//Ucglib8Bit ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, 0, 1, 2, 3, 4, 5, 6, 7, /* wr= */ 18 , /* cd= */ 19 , /* cs= */ 17, /* reset= */ 16 );
+//Ucglib8BitPortD ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, /* wr= */ 18, /* cd= */ 19, /* cs= */ 17, /* reset= */ 16 );
+//Ucglib8Bit ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, 0, 1, 2, 3, 4, 5, 6, 7, /* wr= */ 18, /* cd= */ 19, /* cs= */ 17, /* reset= */ 16 );
 
-//Ucglib4WireSWSPI ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, /*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);	// not working
-//Ucglib4WireSWSPI ucg(ucg_dev_ili9325_spi_18x240x320, ucg_ext_ili9325_spi_18, /*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);	// not working
+//Ucglib4WireSWSPI ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, /*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);	// not working
+//Ucglib4WireSWSPI ucg(ucg_dev_ili9325_spi_18x240x320, ucg_ext_ili9325_spi_18, /*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);	// not working
 //Ucglib3WireILI9325SWSPI ucg(ucg_dev_ili9325_spi_18x240x320, ucg_ext_ili9325_spi_18, /*sclk=*/ 13, /*data=*/ 11, /*cs=*/ 10, /*reset=*/ 8);	// not working
 //Ucglib3WireILI9325SWSPI ucg(ucg_dev_ili9325_18x240x320_itdb02, ucg_ext_ili9325_18, /*sclk=*/ 13, /*data=*/ 11, /*cs=*/ 10, /*reset=*/ 8);	// not working
 
-//Ucglib_ST7735_18x128x160_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ST7735_18x128x160_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
 
-//Ucglib_ILI9163_18x128x128_SWSPI ucg(/*sclk=*/ 7, /*data=*/ 6, /*cd=*/ 5 , /*cs=*/ 3, /*reset=*/ 4);
-//Ucglib_ILI9163_18x128x128_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);	/* HW SPI Adapter */
+//Ucglib_ILI9163_18x128x128_SWSPI ucg(/*sclk=*/ 7, /*data=*/ 6, /*cd=*/ 5, /*cs=*/ 3, /*reset=*/ 4);
+//Ucglib_ILI9163_18x128x128_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);	/* HW SPI Adapter */
 
-//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 7, /*data=*/ 6, /*cd=*/ 5 , /*cs=*/ 3, /*reset=*/ 4);
-//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 4, /*data=*/ 3, /*cd=*/ 6 , /*cs=*/ 7, /*reset=*/ 5);	/* Elec Freaks Shield */
+//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 7, /*data=*/ 6, /*cd=*/ 5, /*cs=*/ 3, /*reset=*/ 4);
+//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ILI9341_18x240x320_SWSPI ucg(/*sclk=*/ 4, /*data=*/ 3, /*cd=*/ 6, /*cs=*/ 7, /*reset=*/ 5);	/* Elec Freaks Shield */
 
-//Ucglib_SSD1351_18x128x128_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_SSD1351_18x128x128_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_SSD1351_18x128x128_FT_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_SSD1351_18x128x128_FT_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ILI9486_18x320x480_SWSPI ucg(/*sclk=*/ 7, /*data=*/ 6, /*cd=*/ 5, /*cs=*/ 3, /*reset=*/ 4);
+//Ucglib_ILI9486_18x320x480_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ILI9486_18x320x480_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_ILI9486_18x320x480_SWSPI ucg(/*sclk=*/ 4, /*data=*/ 3, /*cd=*/ 6, /*cs=*/ 7, /*reset=*/ 5);	/* Elec Freaks Shield */
+
+//Ucglib_SSD1351_18x128x128_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SSD1351_18x128x128_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SSD1351_18x128x128_FT_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SSD1351_18x128x128_FT_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
 
 //Ucglib_PCF8833_16x132x132_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cs=*/ 9, /*reset=*/ 8);	/* linksprite board */
 //Ucglib_PCF8833_16x132x132_HWSPI ucg(/*cs=*/ 9, /*reset=*/ 8);	/* linksprite board */
 
 //Ucglib_LD50T6160_18x160x128_6Bit ucg( /*d0 =*/ d0, /*d1 =*/ d1, /*d2 =*/ d2, /*d3 =*/ d3, /*d4 =*/ d4, /*d5 =*/ d5, /*wr=*/ wr, /*cd=*/ cd, /*cs=*/ cs, /*reset=*/ reset);
-//Ucglib_LD50T6160_18x160x128_6Bit ucg( /*d0 =*/ 16, /*d1 =*/ 17, /*d2 =*/ 18, /*d3 =*/ 19, /*d4 =*/ 20, /*d5 =*/ 21, /*wr=*/ 14, /*cd=*/ 15); /* Samsung 160x128 OLED with 6Bit minimal interface with Due */ 
-//Ucglib_LD50T6160_18x160x128_6Bit ucg( /*d0 =*/ 5, /*d1 =*/ 4, /*d2 =*/ 3, /*d3 =*/ 2, /*d4 =*/ 1, /*d5 =*/ 0, /*wr=*/ 7, /*cd=*/ 6); /* Samsung 160x128 OLED with 6Bit minimal interface with Uno */ 
+//Ucglib_LD50T6160_18x160x128_6Bit ucg( /*d0 =*/ 16, /*d1 =*/ 17, /*d2 =*/ 18, /*d3 =*/ 19, /*d4 =*/ 20, /*d5 =*/ 21, /*wr=*/ 14, /*cd=*/ 15); /* Samsung 160x128 OLED with 6Bit minimal interface with Due */
+//Ucglib_LD50T6160_18x160x128_6Bit ucg( /*d0 =*/ 5, /*d1 =*/ 4, /*d2 =*/ 3, /*d3 =*/ 2, /*d4 =*/ 1, /*d5 =*/ 0, /*wr=*/ 7, /*cd=*/ 6); /* Samsung 160x128 OLED with 6Bit minimal interface with Uno */
 
-//Ucglib_SSD1331_18x96x64_UNIVISION_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_SSD1331_18x96x64_UNIVISION_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SSD1331_18x96x64_UNIVISION_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SSD1331_18x96x64_UNIVISION_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
 
-//Ucglib_SEPS225_16x128x128_UNIVISION_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
-//Ucglib_SEPS225_16x128x128_UNIVISION_HWSPI ucg(/*cd=*/ 9 , /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SEPS225_16x128x128_UNIVISION_SWSPI ucg(/*sclk=*/ 13, /*data=*/ 11, /*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
+//Ucglib_SEPS225_16x128x128_UNIVISION_HWSPI ucg(/*cd=*/ 9, /*cs=*/ 10, /*reset=*/ 8);
 
-
-void setup(void) {
+void setup(void)
+{
   delay(1000);
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
-  ucg.setColor(0, 0,0,0);
-  ucg.setColor(1, 0,0,0);
-  ucg.setColor(2, 0,0,0);
-  ucg.setColor(3, 0,0,0);
+  ucg.setColor(0, 0, 0, 0);
+  ucg.setColor(1, 0, 0, 0);
+  ucg.setColor(2, 0, 0, 0);
+  ucg.setColor(3, 0, 0, 0);
 }
 
 /*
@@ -157,48 +162,57 @@ void setup(void) {
   c = 17
   a-1 = 64 --> a = 65
 */
-uint8_t z = 127;	// start value
-uint8_t lcg_rnd(void) {
-  z = (uint8_t)((uint16_t)65*(uint16_t)z + (uint16_t)17);
+uint8_t z = 127; // start value
+uint8_t lcg_rnd(void)
+{
+  z = (uint8_t)((uint16_t)65 * (uint16_t)z + (uint16_t)17);
   return z;
 }
 
-
-
-
-void draw_text(void) {
+void draw_text(void)
+{
   ucg.setFont(ucg_font_ncenR14_tr);
   //ucg.setColor(255, 255, 255);
-  ucg.setColor(lcg_rnd(),lcg_rnd(),lcg_rnd());
-  ucg.setPrintPos(0,20);
+  ucg.setColor(lcg_rnd(), lcg_rnd(), lcg_rnd());
+  ucg.setPrintPos(0, 20);
   ucg.print("The quick brown");
-  ucg.setPrintPos(0,40);
+  ucg.setPrintPos(0, 40);
   ucg.print("fox jumps over");
-  ucg.setPrintPos(0,60);
+  ucg.setPrintPos(0, 60);
   ucg.print("the lazy dog");
 }
 
-void draw_box(void) {
+void draw_box(void)
+{
   ucg_int_t x, y, w, h;
-  ucg.setColor(lcg_rnd(),lcg_rnd(),lcg_rnd());
+  ucg.setColor(lcg_rnd(), lcg_rnd(), lcg_rnd());
   x = lcg_rnd() & 31;
   y = lcg_rnd() & 31;
   w = 63;
   w += lcg_rnd() & 31;
   h = 63;
   h += lcg_rnd() & 31;
-  ucg.drawBox(x,y,w, h);
+  ucg.drawBox(x, y, w, h);
 }
 
-void draw_gradient_box(void) {
+void draw_gradient_box(void)
+{
   ucg_int_t x, y, w, h;
   static uint8_t idx = 0;
-  switch(idx & 3)
+  switch (idx & 3)
   {
-    case 0: ucg.setColor(0, lcg_rnd(),lcg_rnd(),lcg_rnd()); break;
-    case 1: ucg.setColor(1, lcg_rnd(),lcg_rnd(),lcg_rnd()); break;
-    case 2: ucg.setColor(2, lcg_rnd(),lcg_rnd(),lcg_rnd()); break;
-    case 3: ucg.setColor(3, lcg_rnd(),lcg_rnd(),lcg_rnd()); break;
+  case 0:
+    ucg.setColor(0, lcg_rnd(), lcg_rnd(), lcg_rnd());
+    break;
+  case 1:
+    ucg.setColor(1, lcg_rnd(), lcg_rnd(), lcg_rnd());
+    break;
+  case 2:
+    ucg.setColor(2, lcg_rnd(), lcg_rnd(), lcg_rnd());
+    break;
+  case 3:
+    ucg.setColor(3, lcg_rnd(), lcg_rnd(), lcg_rnd());
+    break;
   }
   idx++;
   x = lcg_rnd() & 31;
@@ -207,44 +221,44 @@ void draw_gradient_box(void) {
   w += lcg_rnd() & 31;
   h = 63;
   h += lcg_rnd() & 31;
-  ucg.drawGradientBox(x,y,w, h);
+  ucg.drawGradientBox(x, y, w, h);
 }
 
-
 // returns FPS*10
-uint16_t measure(void (*draw_fn)(void)) {
+uint16_t measure(void (*draw_fn)(void))
+{
   uint16_t FPS10 = 0;
   uint32_t time;
 
   ucg.clearScreen();
 
-  time = millis() + 10*1000;
-  do {
+  time = millis() + 10 * 1000;
+  do
+  {
     draw_fn();
     FPS10++;
-  } while( millis() < time );
-  
-  return FPS10;  
+  } while (millis() < time);
+
+  return FPS10;
 }
 
-
-static const unsigned char u8d_tab[3]  = { 100, 10, 1 } ;
-const char *u8dp(char * dest, uint8_t v)
+static const unsigned char u8d_tab[3] = {100, 10, 1};
+const char *u8dp(char *dest, uint8_t v)
 {
   uint8_t pos;
   uint8_t d;
   uint8_t c;
-  for( pos = 0; pos < 3; pos++ )
+  for (pos = 0; pos < 3; pos++)
   {
-      d = '0';
-      c = *(u8d_tab+pos);
-      while( v >= c )
-      {
-	v -= c;
-	d++;
-      }
-      dest[pos] = d;
-  }  
+    d = '0';
+    c = *(u8d_tab + pos);
+    while (v >= c)
+    {
+      v -= c;
+      d++;
+    }
+    dest[pos] = d;
+  }
   dest[3] = '\0';
   return dest;
 }
@@ -253,27 +267,29 @@ const char *u8dp(char * dest, uint8_t v)
 const char *u8d(uint8_t v, uint8_t d)
 {
   static char buf[8];
-  d = 3-d;
+  d = 3 - d;
   return u8dp(buf, v) + d;
 }
 
-const char *convert_FPS(uint16_t fps) {
+const char *convert_FPS(uint16_t fps)
+{
   static char buf[6];
-  strcpy(buf, u8d( (uint8_t)(fps/10), 3));
-  buf[3] =  '.';
+  strcpy(buf, u8d((uint8_t)(fps / 10), 3));
+  buf[3] = '.';
   buf[4] = (fps % 10) + '0';
   buf[5] = '\0';
   return buf;
 }
 
-void show_result(const char *s, uint16_t fps)  {
+void show_result(const char *s, uint16_t fps)
+{
   ucg.clearScreen();
   ucg.setFont(ucg_font_helvR18_tr);
   ucg.setColor(255, 255, 255);
-  ucg.setPrintPos(0,25);
+  ucg.setPrintPos(0, 25);
   ucg.print(s);
-  ucg.setPrintPos(0,50);
-  ucg.print(convert_FPS(fps));  
+  ucg.setPrintPos(0, 50);
+  ucg.print(convert_FPS(fps));
   delay(2000);
 }
 
@@ -283,5 +299,4 @@ void loop(void)
   show_result("Box", measure(draw_box));
   show_result("Gradient", measure(draw_gradient_box));
   delay(500);
-  
 }

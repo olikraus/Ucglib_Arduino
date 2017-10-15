@@ -329,6 +329,22 @@ class Ucglib_ILI9341_18x240x320_SWSPI : public Ucglib4WireSWSPI
   //  { }
 };
 
+class Ucglib_ILI9486_18x320x480_HWSPI : public Ucglib4WireHWSPI
+{
+  public:
+  Ucglib_ILI9486_18x320x480_HWSPI( uint8_t cd, uint8_t cs = UCG_PIN_VAL_NONE, uint8_t reset = UCG_PIN_VAL_NONE) : 
+    Ucglib4WireHWSPI(ucg_dev_ili9486_18x320x480, ucg_ext_ili9486_18, /*cd=*/ cd , /*cs=*/ cs, /*reset=*/ reset)
+    { }
+};
+
+class Ucglib_ILI9486_18x320x480_SWSPI : public Ucglib4WireSWSPI
+{
+  public:
+  Ucglib_ILI9486_18x320x480_SWSPI( uint8_t scl, uint8_t sda, uint8_t cd, uint8_t cs = UCG_PIN_VAL_NONE, uint8_t reset = UCG_PIN_VAL_NONE) : 
+    Ucglib4WireSWSPI(ucg_dev_ili9486_18x320x480, ucg_ext_ili9486_18, /*scl=*/ scl, /*sda=*/ sda, /*cd=*/ cd , /*cs=*/ cs, /*reset=*/ reset)
+    { }
+};
+
 class Ucglib_ILI9163_18x128x128_HWSPI : public Ucglib4WireHWSPI
 {
   public:
