@@ -2,7 +2,7 @@
 
   ucg_dev_tft_320x480_ili9486.c
   
-  ILI9341 with 4-Wire SPI (SCK, SDI, CS, D/C and optional reset)
+  ILI9486 with 4-Wire SPI (SCK, SDI, CS, D/C and optional reset)
 
   Universal uC Color Graphics Library
   
