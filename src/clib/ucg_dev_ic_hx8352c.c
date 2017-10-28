@@ -349,8 +349,10 @@ ucg_int_t ucg_handle_hx8352c_l90se(ucg_t *ucg)
 
 static const ucg_pgm_uint8_t ucg_hx8352c_power_down_seq[] = {
     UCG_CS(0),      /* enable chip */
-    UCG_C10(0x010), /* sleep in */
-    UCG_C10(0x28),  /* display off */
+    UCG_C11(0x01F, 0x001), // Set standby (STB=1)
+    //UCG_C11(?, ?), // Set deep standby (DP_STB_S=1)
+    //UCG_C11(0x001, 0x080), // Set deep standby (DP_STB=1)
+    UCG_C11(0x019, 0x000), // Stop oscillation (OSC_EN=0)
     UCG_CS(1),      /* disable chip */
     UCG_END(),      /* end of sequence */
 };
