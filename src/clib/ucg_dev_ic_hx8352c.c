@@ -140,49 +140,32 @@ const ucg_pgm_uint8_t ucg_hx8352c_set_pos_dir3_seq[] =
 ucg_int_t ucg_handle_hx8352c_l90fx(ucg_t *ucg)
 {
   uint8_t c[3];
-  ucg_int_t i;
+  ucg_int_t tmp;
   if (ucg_clip_l90fx(ucg) != 0)
   {
     switch (ucg->arg.dir)
     {
     case 0:
       ucg_com_SendCmdSeq(ucg, ucg_hx8352c_set_pos_dir0_seq);
-      c[0] = ucg->arg.pixel.rgb.color[0];
-      c[1] = ucg->arg.pixel.rgb.color[1];
-      c[2] = ucg->arg.pixel.rgb.color[2];
-      ucg_com_SendRepeat3Bytes(ucg, ucg->arg.len, c);
-      ucg_com_SetCSLineStatus(ucg, 1); /* disable chip */
       break;
     case 1:
       ucg_com_SendCmdSeq(ucg, ucg_hx8352c_set_pos_dir1_seq);
-      c[0] = ucg->arg.pixel.rgb.color[0];
-      c[1] = ucg->arg.pixel.rgb.color[1];
-      c[2] = ucg->arg.pixel.rgb.color[2];
-      ucg_com_SendRepeat3Bytes(ucg, ucg->arg.len, c);
-      ucg_com_SetCSLineStatus(ucg, 1); /* disable chip */
       break;
     case 2:
-      for (i = 0; i < ucg->arg.len; i++)
-      {
-        ucg_dev_ic_hx8352c_18(ucg, UCG_MSG_DRAW_PIXEL, NULL);
-        ucg->arg.pixel.pos.x--;
-#ifdef ESP8266
-        yield(); // avoid block process
-#endif
-      }
+      ucg->arg.pixel.pos.x -= ucg->arg.len - 1;
+      ucg_com_SendCmdSeq(ucg, ucg_hx8352c_set_pos_dir2_seq);
       break;
     case 3:
     default:
-      for (i = 0; i < ucg->arg.len; i++)
-      {
-        ucg_dev_ic_hx8352c_18(ucg, UCG_MSG_DRAW_PIXEL, NULL);
-        ucg->arg.pixel.pos.y--;
-#ifdef ESP8266
-        yield(); // avoid block process
-#endif
-      }
+      ucg->arg.pixel.pos.y -= ucg->arg.len - 1;
+      ucg_com_SendCmdSeq(ucg, ucg_hx8352c_set_pos_dir3_seq);
       break;
     }
+    c[0] = ucg->arg.pixel.rgb.color[0];
+    c[1] = ucg->arg.pixel.rgb.color[1];
+    c[2] = ucg->arg.pixel.rgb.color[2];
+    ucg_com_SendRepeat3Bytes(ucg, ucg->arg.len, c);
+    ucg_com_SetCSLineStatus(ucg, 1); /* disable chip */
     return 1;
   }
   return 0;
