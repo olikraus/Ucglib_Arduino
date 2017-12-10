@@ -2,7 +2,7 @@
 
 Color graphics library for embedded systems with focus on Arduino Environment (new library format).
 
-Supported display controller: ST7735, ILI9341, PCF8833, SSD1351
+Supported display controller: ST7735, ILI9163, ILI9325, ILI9341, ILI9486,LD50T6160, PCF8833, SEPS225, SSD1331, SSD1351, HX8352C
 
 Features: Graphics primitives with 18 bit color depth, filled polygon draw, >300, landscape/portrait mode.
 
